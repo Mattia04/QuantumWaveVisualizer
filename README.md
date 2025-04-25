@@ -1,56 +1,47 @@
 # Quantum Wavefunction Evolution Simulation
 
 ## Overview
-This project aims to simulate the time evolution of a quantum particle in a one-dimensional quantum system governed by the Hamiltonian:
+This project simulates the time evolution of a quantum particle in a one-dimensional system, governed by the Hamiltonian:
 
 $$\hat H = \frac{\hat p^2}{2m} + V(x)$$
 
-In this system:
-- `x` denotes the position of the particle.
-- `p` denotes the momentum of the particle.
-- `m` represents the mass of the particle.
-- `V(x)` is the potential energy function, which will define the behavior of the wavefunction in the system.
+Where:
+- `x` is the particle's position.
+- `p` is the particle's momentum.
+- `m` is the particle's mass.
+- `V(x)` is the potential energy function.
 
-The primary goal is to visualize the quantum wavefunction's time evolution for different energy eigenstates $\psi_n(x, t)$ using the **time-dependent Schrödinger equation**.
+The project visualizes the quantum wavefunction's time evolution for different energy eigenstates $\psi_n(x, t)$ using the **time-dependent Schrödinger equation**, implemented in a Jupyter Notebook (`main.ipynb`).
 
 ## Mathematical Background
 
 ### Schrödinger Equation
-The time-dependent Schrödinger equation for a particle can be written as:
+The time-dependent Schrödinger equation is:
     
 $$ i\hbar \frac{\partial \psi}{\partial t} = H \psi(x, t) $$
 
-
-Substituting $\hat H = \frac{\hat{p}^2}{2m} + V(x)$ and using the canonical momentum operator $\hat{p} = -i\hbar \frac{\partial}{\partial x}$, we obtain:
+Substituting $\hat H = \frac{\hat{p}^2}{2m} + V(x)$ and using the canonical momentum operator $\hat{p} = -i\hbar \frac{\partial}{\partial x}$:
 
 $$
 i\hbar \frac{\partial \psi(x, t)}{\partial t} = \left[-\frac{\hbar^2}{2m} \frac{\partial^2}{\partial x^2} + V(x)\right] \psi(x, t).
 $$
 
-
-
-For a stationary potential $V(x)$, the time evolution of the wavefunction is determined by the eigenstates of the Hamiltonian. Solving the **time-independent Schrödinger equation**,
+For a stationary potential $V(x)$, the time evolution is determined by the eigenstates of the Hamiltonian. Solving the **time-independent Schrödinger equation**:
 
 $$
 \hat H | \psi_n(x) \rangle = E_n | \psi_n(x) \rangle
 $$
 
-
-provides the energy eigenvalues $E_n$ and eigenfunctions $ \psi_n(x) $. Using these, a general wavefunction is expressed as:
+yields energy eigenvalues $E_n$ and eigenfunctions $ \psi_n(x) $.  A general wavefunction is expressed as:
     
 $$
 \psi(x, t) = \sum_n c_n \psi_n(x) e^{-iE_n t / \hbar}
 $$
 
-
 where $c_n$ are the coefficients for the eigenstate decomposition.
 
 ### Time Evolution
-By selecting specific energy eigenstates or superpositions of eigenstates $\psi(x, t) = \sum_n c_n \psi_n(x) $, we can utilize their time-dependent factor $ e^{-iE_n t / \hbar} $ to study how the wavefunction evolves over time.
-
-### Visualization Goals
-- Visualize $ |\psi(x, t)|^2 $, the probability density of the particle, for different energy levels $n$.
-- Analyze the behavior of $ \psi(x, t) $ for various potential functions $V(x)$.
+By selecting specific energy eigenstates or superpositions of eigenstates $\psi(x, t) = \sum_n c_n \psi_n(x) $, we utilize their time-dependent factor $ e^{-iE_n t / \hbar} $ to study the wavefunction's evolution over time.
 
 ## Project Structure
 
@@ -63,21 +54,26 @@ By selecting specific energy eigenstates or superpositions of eigenstates $\psi(
     - Simple potentials $V(x)$: e.g. free particle, infinite square well, harmonic oscillator.
     - Customizable user-defined potentials.
 
+### Implemented Methods
+
+The `main.ipynb` notebook includes functions for:
+
+- Defining spatial grids (`define_grid`).
+- Defining various potentials (`potential_square_well`, `potential_harmonic_oscillator`, `potential_free_particle`, `potential_custom`).
+- Defining initial wave packets (`gaussian_wave`, `square_wave`, `triangular_wave`, `custom_wave`).
+- Constructing the Hamiltonian matrix (`construct_hamiltonian`).
+- Solving the time-independent Schrödinger equation (`solve_schrodinger`).
+- Compute the coefficients of the initial wavefunction (`get_coefficients`)
+- Computing the time-evolved wavefunction (`wavefunction_evolution`).
+- Calculating the expectation value of position (`calculate_expectation_value`).
+- Animating the wavefunction evolution (`animate_wavefunction`).
+- Plot the initial conditions of the system (`plot_starting_conditions`)
+
 ### Visualizations
-The simulation will generate dynamic visualizations showcasing:
-1. The initial wavefunction.
+The simulation generates dynamic visualizations showcasing:
+1. The initial wavefunction and defined potential.
 2. The system's evolution over time.
 3. Comparisons between different energy eigenstates.
-
-## Dependencies
-The simulation will use the following Python libraries:
-- **numpy**: Efficient numerical routines (e.g., solving differential equations).
-- **scipy**: For solving eigenvalue problems in the Hamiltonian.
-- **matplotlib**: Visualization of the wavefunction and probability density.
-- **ffmpeg**: To create animations for wavefunction evolution.
-- **seaborn**: Additional aesthetic visualizations.
-
-Ensure you have Python 3.9+ installed.
 
 ## Usage Instructions
 1. Clone this repository into your working directory.
@@ -85,24 +81,39 @@ Ensure you have Python 3.9+ installed.
    ```bash
    pip install -r requirements.txt
    ```
-3. Define the Hamiltonian parameters and potential $ V(x) $ using configuration scripts.
-4. Run the simulation script to generate eigenvalues, eigenfunctions, and visualizations.
-5. Explore or modify predefined examples in the `/notebooks` folder.
+3. Open and run the `main.ipynb` Jupyter Notebook.
+4. Modify parameters within the notebook to explore different potentials, initial wavefunctions, and simulation settings.
 
-## Example Test Cases
+### Dependencies
+The simulation uses the following Python libraries:
+- **numpy**: Efficient numerical routines.
+- **scipy**: Solving eigenvalue problems.
+- **matplotlib**: Wavefunction and probability density visualization.
+- **ffmpeg**: Creating animations for wavefunction evolution.
+- **seaborn**: Aesthetic visualizations.
+
+## Demo Examples
+
+The following examples demonstrate the capabilities of the simulation:
+
 ### Infinite Square Well
-A particle trapped in an infinite square potential well:
 
-$$
-\cases{V(x) = 0 \quad & $\text{for } 0 \leq x \leq L$ \\
-       \infty \quad & \text{elsewhere}}
-$$
+This example shows the evolution of a Gaussian wave packet in a finite square-well potential:
 
-Wavefunctions $ \psi_n(x) $ and energy levels $E_n $ are well-known, making it an ideal test case.
+![Finite Square Well](Examples/wavefunction_well_gaussian.png)
 
-### Quadratic Potential (Harmonic Oscillator)
-The classic example of $ V(x) = 0.5kx^2 $, representing a harmonic oscillator.
+[Square well](Examples/wavefunction_harmonic_square.mp4)
 
-## Future Extensions
-- Extend to higher-dimensional systems (e.g., 2D or 3D quantum wells).
-- Incorporate non-stationary potentials $ V(x, t) $ for time-varying phenomena.
+### Harmonic Oscillator
+
+Time evolution of a square wave in a harmonic oscillator potential:
+
+![Harmonic Oscillator](Examples/wavefunction_harmonic_square.png)
+
+[Harmonic Oscillator](Examples/wavefunction_harmonic_square.mp4)
+
+### Wave Packet Evolution
+
+Complete animation of quantum wave packet in a custom potential:
+
+[Wavefunction Evolution Video](wavefunction.mp4)
